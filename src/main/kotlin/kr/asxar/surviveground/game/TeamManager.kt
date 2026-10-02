@@ -10,51 +10,48 @@ import java.util.*
 
 class TeamManager {
     private val gameManager = SurviveGround.gameManager
+    private val teamColors = listOf(
+        NamedTextColor.RED,
+        NamedTextColor.BLUE,
+        NamedTextColor.YELLOW
+    )
 
-    private val teamsId = listOf(NamedTextColor.RED, NamedTextColor.BLUE, NamedTextColor.YELLOW)
     private val scoreboard = Bukkit.getScoreboardManager().mainScoreboard
+
     var teams = mutableListOf<Team>()
 
     fun init() {
-        teams.forEach {
-            for (player in it.players) { it.removePlayer(player) }
-            it.unregister()
+        teams.forEach { team ->
+            team.players.toList().forEach(team::removePlayer)
+            team.unregister()
         }
+
         teams.clear()
 
-        val t = gameManager.numOfTeam()-1
-        for(i in 0..t) {
-            val team = scoreboard.getTeam(teamsId[i].toString().lowercase())
-                ?: scoreboard.registerNewTeam(teamsId[i].toString().lowercase())
-            team.color(teamsId[i])
-            team.prefix(Component.text("●").color(teamsId[i]))
+        repeat(gameManager.numOfTeam()) { index ->
+            val color = teamColors[index]
+            val team = scoreboard.getTeam("sg_${color}")
+                ?: scoreboard.registerNewTeam("sg_${color}")
+
+            team.color(color)
+            team.prefix(Component.text("●").color(color))
+
             teams.add(team)
         }
     }
 
     fun setupTeams(players: List<UUID>) {
-        val mutable = players.toMutableList()
-
-        val gameManager = SurviveGround.gameManager
         val playerNum = gameManager.numOfTeamPlayer()
-        repeat(gameManager.numOfTeam()) {
-            repeat(playerNum) {
-                val uuid = mutable.random()
-                mutable.remove(uuid)
-                val player = Bukkit.getPlayer(uuid) ?: return@repeat
-                addPlayer2Team(player)
+        val shuffled = players.shuffled()
+
+        teams.forEachIndexed { index, team ->
+            val start = index * playerNum
+            val end = start + playerNum
+
+            shuffled.subList(start, end).forEach { uuid ->
+                val player = Bukkit.getPlayer(uuid) ?: return@forEach
+                team.addPlayer(player)
             }
-        }
-    }
-
-    private fun addPlayer2Team(player: OfflinePlayer) {
-        val playerNum = gameManager.numOfTeamPlayer()
-
-        val team = teams.random()
-        if (team.players.size >= playerNum) {
-            addPlayer2Team(player)
-        } else {
-            team.addPlayer(player)
         }
     }
 }

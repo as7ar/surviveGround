@@ -34,6 +34,6 @@ class SurviveGround : JavaPlugin() {
 
         GameCommand()
 
-        server.scheduler.runTaskTimerAsynchronously(this, ActionBarTask(), 0, 20)
+        server.scheduler.runTaskTimer(this, ActionBarTask(), 0, 20)
     }
 }
