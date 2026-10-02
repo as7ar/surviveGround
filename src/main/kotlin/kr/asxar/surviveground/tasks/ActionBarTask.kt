@@ -29,7 +29,7 @@ class ActionBarTask: Consumer<BukkitTask> {
         }
 
         if (status == GameStatus.STARTING) {
-            if (count==0) {
+            if (count<=0) {
                 runTask {
                     gameManager.start(players)
                 }
@@ -37,24 +37,29 @@ class ActionBarTask: Consumer<BukkitTask> {
             }
 
             if (players.size < needed) {
+                gameManager.gameStatus= GameStatus.WAITING
                 runTask {
                     Bukkit.getOnlinePlayers().forEachIndexed { index, player ->
                         player.sendActionBar(Component.text("플레이어가 부족합니다!").color(TextColor.color(0xA14646)))
                     }
                 }
             }
-            Bukkit.getOnlinePlayers().forEachIndexed { index, player ->
-                val color = when(count) {
-                    3 -> 0xEB895B
-                    2 -> 0xDA6556
-                    1 -> 0xA14646
-                    else -> 0xFDB773
+
+            if (players.size == needed) {
+                gameManager.gameStatus= GameStatus.STARTING
+                Bukkit.getOnlinePlayers().forEachIndexed { index, player ->
+                    val color = when(count) {
+                        3 -> 0xEB895B
+                        2 -> 0xDA6556
+                        1 -> 0xA14646
+                        else -> 0xFDB773
+                    }
+                    runTask {
+                        player.sendActionBar(Component.text("$count").color(TextColor.color(color)))
+                    }
                 }
-                runTask {
-                    player.sendActionBar(Component.text("$count").color(TextColor.color(color)))
-                }
+                count-=1
             }
-            count-=1
         }
 
         if (status == GameStatus.PLAYING) {
