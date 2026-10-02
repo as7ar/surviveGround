@@ -1,5 +1,6 @@
 package kr.asxar.surviveground.queue
 
+import kr.asxar.surviveground.SurviveGround
 import kr.asxar.surviveground.game.GameManager
 import org.bukkit.OfflinePlayer
 import org.bukkit.event.EventHandler
@@ -12,9 +13,10 @@ class QueueManager {
         @JvmStatic
         fun addPlayer(player: OfflinePlayer): Boolean {
             val result = QueueManager().queuePlayers.add(player.uniqueId)
+            val gameManager = SurviveGround.gameManager
 
             val players = QueueManager().queuePlayers.size
-            val needed = GameManager().numOfNeedPlayer()
+            val needed = gameManager.numOfNeedPlayer()
 
             if (players == needed) {
 

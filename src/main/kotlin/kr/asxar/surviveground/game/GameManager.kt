@@ -50,4 +50,15 @@ class GameManager {
         GameMode.PLAYERS3vs3 -> 6
         GameMode.PLAYERS1vs1 -> 2
     }
+
+    fun numOfTeam() = when(gameMode) {
+        GameMode.PLAYERS3vs3vs3 -> 3
+        else -> 2
+    }
+
+    fun numOfTeamPlayer() = when(gameMode) {
+        GameMode.PLAYERS3vs3vs3, GameMode.PLAYERS3vs3 -> 3
+        GameMode.PLAYERS1vs1 -> 1
+        GameMode.PLAYERS5vs5 -> 5
+    }
 }

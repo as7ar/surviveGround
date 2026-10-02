@@ -15,8 +15,9 @@ import java.util.function.Consumer
 private var count: Int = 10
 class ActionBarTask: Consumer<BukkitTask> {
     override fun accept(task: BukkitTask) {
-        val status = GameManager().gameStatus
-        val needed = GameManager().numOfNeedPlayer()
+        val gameManager = SurviveGround.gameManager
+        val status = gameManager.gameStatus
+        val needed = gameManager.numOfNeedPlayer()
         val players = QueueManager().queuePlayers
 
         if (status == GameStatus.WAITING) {
@@ -32,7 +33,7 @@ class ActionBarTask: Consumer<BukkitTask> {
         if (status == GameStatus.STARTING) {
             if (count==0) {
                 runTask {
-                    GameManager().start(players)
+                    gameManager.start(players)
                 }
                 count = 10
             }
