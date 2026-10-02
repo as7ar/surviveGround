@@ -1,5 +1,6 @@
 package kr.asxar.surviveground.tasks
 
+import kr.asxar.surviveground.SurviveGround
 import kr.asxar.surviveground.game.GameManager
 import kr.asxar.surviveground.game.GameStatus
 import kr.asxar.surviveground.queue.QueueManager
@@ -59,8 +60,10 @@ class ActionBarTask: Consumer<BukkitTask> {
 
         if (status == GameStatus.PLAYING) {
             Bukkit.getOnlinePlayers().forEachIndexed { index, player ->
+                val kda = SurviveGround.playerData.kdaData[player.uniqueId]
+
                 player.sendActionBar(MiniMessage.miniMessage().deserialize(
-                    "K/D/A"
+                    "<#830000>${kda?.get(0) ?: 0}<#AEC4D4>/<#EB895B>${kda?.get(1) ?: 0}<#AEC4D4>/<#76C0EC>${kda?.get(2) ?: 0}"
                 ))
             }
         }
