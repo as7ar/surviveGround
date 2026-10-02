@@ -6,7 +6,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 import org.bukkit.scoreboard.Team
-import java.util.UUID
+import java.util.*
 
 class TeamManager {
     private val gameManager = SurviveGround.gameManager

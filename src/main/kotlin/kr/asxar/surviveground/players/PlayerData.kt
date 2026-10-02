@@ -1,6 +1,6 @@
 package kr.asxar.surviveground.players
 
-import java.util.UUID
+import java.util.*
 
 class PlayerData {
     val kdaData = mutableMapOf<UUID, MutableList<Int>>()

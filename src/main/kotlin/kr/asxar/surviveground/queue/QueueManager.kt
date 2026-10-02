@@ -1,40 +1,26 @@
 package kr.asxar.surviveground.queue
 
 import kr.asxar.surviveground.SurviveGround
-import kr.asxar.surviveground.game.GameManager
+import kr.asxar.surviveground.game.GameStatus
+import org.bukkit.GameMode
 import org.bukkit.OfflinePlayer
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
-import java.util.UUID
+import java.util.*
 
 class QueueManager {
-    companion object {
-        @JvmStatic
-        fun addPlayer(player: OfflinePlayer): Boolean {
-            val result = QueueManager().queuePlayers.add(player.uniqueId)
-            val gameManager = SurviveGround.gameManager
+    fun addPlayer(player: OfflinePlayer): Boolean {
+        val result = queuePlayers.add(player.uniqueId)
+        val gameManager = SurviveGround.gameManager
 
-            val players = QueueManager().queuePlayers.size
-            val needed = gameManager.numOfNeedPlayer()
+        val players = queuePlayers.size
+        val needed = gameManager.numOfNeedPlayer()
 
-            if (players == needed) {
-
-            }
-            if (players > needed) {
-
-            }
-            if (players < needed) {
-
-            }
-
-            return result
-        }
-
-        @JvmStatic
-        fun removePlayer(player: OfflinePlayer) =
-            QueueManager().queuePlayers.remove(player.uniqueId)
+        return result
     }
+
+    fun removePlayer(player: OfflinePlayer) = queuePlayers.remove(player.uniqueId)
 
     var queuePlayers = mutableListOf<UUID>()
 }
@@ -42,6 +28,9 @@ class QueueManager {
 class QueueListener: Listener {
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
-        QueueManager.addPlayer(event.player)
+        if (SurviveGround.gameManager.gameStatus == GameStatus.WAITING)
+            SurviveGround.queueManager.addPlayer(event.player)
+        else if (!SurviveGround.gameManager.isPlayer(event.player))
+            event.player.gameMode = GameMode.SPECTATOR
     }
 }

@@ -1,7 +1,6 @@
 package kr.asxar.surviveground.events
 
 import kr.asxar.surviveground.SurviveGround
-import kr.asxar.surviveground.players.PlayerData
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
@@ -13,7 +12,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerRespawnEvent
-import java.util.UUID
 
 class PlayerEvents: Listener {
     @EventHandler

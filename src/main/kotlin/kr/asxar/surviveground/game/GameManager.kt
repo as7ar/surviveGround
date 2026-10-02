@@ -4,15 +4,17 @@ import kr.asxar.surviveground.SurviveGround
 import kr.asxar.surviveground.queue.GameMode
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.OfflinePlayer
 import java.util.*
 
 class GameManager {
     private val plugin = SurviveGround.instance
+    private var playerList = mutableListOf<UUID>()
     var gameMode: GameMode = GameMode.PLAYERS5vs5
     var gameStatus: GameStatus = GameStatus.WAITING
 
     val startLocation = mutableMapOf<String, Location>()
-    // todo: 팀, 팀별 시작 위치, 자기장, 승자 표시, 후원API,
+    // todo: 자기장, 승자 표시, 후원API,
 
     fun start(players: List<UUID>) {
         gameStatus= GameStatus.PLAYING
@@ -20,6 +22,10 @@ class GameManager {
         for (player in Bukkit.getOnlinePlayers()) {
             player.inventory.clear()
         }
+        playerList.addAll(players)
+
+        SurviveGround.teamManager.init()
+        SurviveGround.teamManager.setupTeams(players)
     }
 
     fun cancel() {}
@@ -37,8 +43,18 @@ class GameManager {
 
             player.gameMode = org.bukkit.GameMode.SURVIVAL
         }
+
+        // todo: Celebrate the Winner
+
+        SurviveGround.queueManager.queuePlayers.clear()
+        for(player in Bukkit.getOnlinePlayers()) {
+            SurviveGround.queueManager.addPlayer(player)
+        }
         gameStatus= GameStatus.WAITING
+        playerList.clear()
     }
+
+    fun isPlayer(player: OfflinePlayer): Boolean = playerList.contains(player.uniqueId)
 
     fun setGameMode(mode: GameMode) {
         gameMode = mode

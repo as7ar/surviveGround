@@ -1,9 +1,7 @@
 package kr.asxar.surviveground.tasks
 
 import kr.asxar.surviveground.SurviveGround
-import kr.asxar.surviveground.game.GameManager
 import kr.asxar.surviveground.game.GameStatus
-import kr.asxar.surviveground.queue.QueueManager
 import kr.asxar.surviveground.runTask
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
@@ -18,7 +16,7 @@ class ActionBarTask: Consumer<BukkitTask> {
         val gameManager = SurviveGround.gameManager
         val status = gameManager.gameStatus
         val needed = gameManager.numOfNeedPlayer()
-        val players = QueueManager().queuePlayers
+        val players = SurviveGround.queueManager.queuePlayers
 
         if (status == GameStatus.WAITING) {
             runTask {
