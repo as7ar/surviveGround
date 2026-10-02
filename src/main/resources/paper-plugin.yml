@@ -1,0 +1,10 @@
+name: SurviveGround
+version: '${version}'
+
+main: kr.asxar.surviveground.SurviveGround
+bootstrapper: kr.asxar.surviveground.SurviveGroundBootstrap
+loader: kr.asxar.surviveground.SurviveGroundLoader
+api-version: '26.1.2'
+load: POSTWORLD
+
+authors: [ AS7AR ]
