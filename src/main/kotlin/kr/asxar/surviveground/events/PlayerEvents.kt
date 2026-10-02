@@ -1,6 +1,7 @@
 package kr.asxar.surviveground.events
 
 import kr.asxar.surviveground.SurviveGround
+import kr.asxar.surviveground.game.ToastManager
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
@@ -28,6 +29,11 @@ class PlayerEvents: Listener {
             Component.text("${killer.name} -💀> ${event.entity.name}")
                 .color(TextColor.color(0xD45060))
         )
+
+        ToastManager(SurviveGround.instance).showKill(
+            killer, event.entity as Player
+        ) // todo: TEST
+
         val playerData = SurviveGround.playerData
         val victim = event.entity.uniqueId
 
