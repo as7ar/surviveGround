@@ -2,6 +2,7 @@ package kr.asxar.surviveground
 
 import kr.asxar.surviveground.commands.GameCommand
 import kr.asxar.surviveground.events.PlayerEvents
+import kr.asxar.surviveground.game.BorderManager
 import kr.asxar.surviveground.game.GameManager
 import kr.asxar.surviveground.game.TeamManager
 import kr.asxar.surviveground.players.PlayerData
@@ -17,6 +18,7 @@ class SurviveGround : JavaPlugin() {
         lateinit var gameManager: GameManager
         lateinit var queueManager: QueueManager
         lateinit var teamManager: TeamManager
+        lateinit var borderManager: BorderManager
     }
 
     override fun onLoad() {
@@ -25,6 +27,7 @@ class SurviveGround : JavaPlugin() {
         gameManager = GameManager()
         queueManager = QueueManager()
         teamManager = TeamManager()
+        borderManager = BorderManager()
         saveDefaultConfig()
     }
 

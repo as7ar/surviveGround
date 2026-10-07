@@ -18,7 +18,7 @@ class TeamManager {
 
     private val scoreboard = Bukkit.getScoreboardManager().mainScoreboard
 
-    var teams = mutableListOf<Team>()
+    var teams = mutableSetOf<Team>()
 
     fun init() {
         teams.forEach { team ->
@@ -30,8 +30,8 @@ class TeamManager {
 
         repeat(gameManager.numOfTeam()) { index ->
             val color = teamColors[index]
-            val team = scoreboard.getTeam("sg_${color}")
-                ?: scoreboard.registerNewTeam("sg_${color}")
+            val name = "sg_${color}"
+            val team = scoreboard.getTeam(name) ?: scoreboard.registerNewTeam(name)
 
             team.color(color)
             team.prefix(Component.text("●").color(color))
@@ -53,5 +53,9 @@ class TeamManager {
                 team.addPlayer(player)
             }
         }
+    }
+
+    fun getPlayerTeam(player: OfflinePlayer): Team? {
+        return teams.find { team -> team.hasPlayer(player) }
     }
 }

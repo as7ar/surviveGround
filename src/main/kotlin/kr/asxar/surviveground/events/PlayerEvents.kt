@@ -45,6 +45,9 @@ class PlayerEvents: Listener {
             if (attacker == killer.uniqueId) return@forEach
             playerData.addAssist(attacker)
         }
+
+        val gameManager = SurviveGround.gameManager
+
     }
 
     @EventHandler
